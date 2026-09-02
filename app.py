@@ -83,19 +83,17 @@ if st.button("Analisar máquina"):
         f"{probability:.2%}"
     )
 
+    st.progress(float(probability))
 
-
-st.progress(float(probability))
-
-if prediction:
-    st.error(
-        f"ALERTA: possível falha detectada.\n\n"
-        f"A probabilidade estimada é de {probability:.2%}, "
-        f"acima do threshold de {threshold:.0%}."
-    )
-else:
-    st.success(
-        f"Máquina operando normalmente.\n\n"
-        f"A probabilidade estimada de falha é de {probability:.2%}, "
-        f"abaixo do threshold de {threshold:.0%}."
-    )
+    if prediction:
+        st.error(
+            f"ALERTA: possível falha detectada.\n\n"
+            f"A probabilidade estimada é de {probability:.2%}, "
+            f"acima do threshold de {threshold:.0%}."
+        )
+    else:
+        st.success(
+            f"Máquina operando normalmente.\n\n"
+            f"A probabilidade estimada de falha é de {probability:.2%}, "
+            f"abaixo do threshold de {threshold:.0%}."
+        )
