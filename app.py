@@ -83,12 +83,7 @@ if st.button("Analisar máquina"):
         f"{probability:.2%}"
     )
 
-    st.subheader("Resultado da análise")
 
-st.metric(
-    "Probabilidade de falha",
-    f"{probability:.2%}"
-)
 
 st.progress(float(probability))
 
