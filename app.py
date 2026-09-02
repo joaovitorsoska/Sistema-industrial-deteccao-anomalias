@@ -19,40 +19,44 @@ st.write(
 
 st.subheader("Parâmetros da máquina")
 
-air_temperature = st.number_input(
-    "Temperatura do ar [K]",
-    min_value=250.0,
-    max_value=350.0,
-    value=300.0
-)
+col1, col2 = st.columns(2)
 
-process_temperature = st.number_input(
-    "Temperatura do processo [K]",
-    min_value=250.0,
-    max_value=400.0,
-    value=310.0
-)
+with col1:
+    air_temperature = st.number_input(
+        "Temperatura do ar [K]",
+        min_value=250.0,
+        max_value=350.0,
+        value=300.0
+    )
 
-rotational_speed = st.number_input(
-    "Velocidade de rotação [rpm]",
-    min_value=0,
-    max_value=3000,
-    value=1500
-)
+    rotational_speed = st.number_input(
+        "Velocidade de rotação [rpm]",
+        min_value=0,
+        max_value=3000,
+        value=1500
+    )
 
-torque = st.number_input(
-    "Torque [Nm]",
-    min_value=0.0,
-    max_value=100.0,
-    value=40.0
-)
+    tool_wear = st.number_input(
+        "Desgaste da ferramenta [min]",
+        min_value=0,
+        max_value=300,
+        value=100
+    )
 
-tool_wear = st.number_input(
-    "Desgaste da ferramenta [min]",
-    min_value=0,
-    max_value=300,
-    value=100
-)
+with col2:
+    process_temperature = st.number_input(
+        "Temperatura do processo [K]",
+        min_value=250.0,
+        max_value=400.0,
+        value=310.0
+    )
+
+    torque = st.number_input(
+        "Torque [Nm]",
+        min_value=0.0,
+        max_value=100.0,
+        value=40.0
+    )
 
 
 input_data = pd.DataFrame(
@@ -79,7 +83,24 @@ if st.button("Analisar máquina"):
         f"{probability:.2%}"
     )
 
-    if prediction:
-        st.error("ALERTA: possível falha detectada.")
-    else:
-        st.success("Máquina operando normalmente.")
+    st.subheader("Resultado da análise")
+
+st.metric(
+    "Probabilidade de falha",
+    f"{probability:.2%}"
+)
+
+st.progress(float(probability))
+
+if prediction:
+    st.error(
+        f"ALERTA: possível falha detectada.\n\n"
+        f"A probabilidade estimada é de {probability:.2%}, "
+        f"acima do threshold de {threshold:.0%}."
+    )
+else:
+    st.success(
+        f"Máquina operando normalmente.\n\n"
+        f"A probabilidade estimada de falha é de {probability:.2%}, "
+        f"abaixo do threshold de {threshold:.0%}."
+    )
